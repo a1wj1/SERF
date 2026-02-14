@@ -143,7 +143,7 @@ if __name__ == "__main__":
                                             default_root_dir=args.logdir,
                                             # 1,2,3,4,5,6,7,8,9,10,11,12,13
                                             # gpus=[0,1,2,3,4,5,6,7,8,9,10,11,12],
-                                            gpus=[5, 6],  # 我们的方法必须用两个gpu跑
+                                            gpus=[5, 6],  # 两个gpu跑
                                             accelerator='ddp',
                                             sync_batchnorm=True,
                                             plugins=DDPPlugin(find_unused_parameters=True),
