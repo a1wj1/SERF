@@ -82,7 +82,7 @@ or
 ```
 python train_serf_carla.py
 ```
-
+The script must run on two GPUs. You can modify the 'gpus=' parameter in pl.Trainer.from_argparse_args.
 
 
 ## Test
