@@ -63,7 +63,7 @@ class Dark_planner(pl.LightningModule):
 
     # 定义优化器
     def configure_optimizers(self):
-        optimizer = optim.AdamW(self.parameters(), lr=self.lr, weight_decay=1e-5)
+        optimizer = optim.AdamW(self.parameters(), lr=self.lr, weight_decay=3e-5)
         lr_scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
 
         return [optimizer], [lr_scheduler]
