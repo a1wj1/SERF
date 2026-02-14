@@ -106,7 +106,7 @@ if __name__ == "__main__":
     event_dataset = EV(root=args.root_dir, csv_file="/test_carla.csv", config=config)
     dataset_size = int(len(event_dataset))
     del event_dataset
-    split_point = int(dataset_size * 0.8)
+    split_point = int(dataset_size * 0.9)
 
     train_dataset = EV(root=args.root_dir, csv_file="/test_carla.csv", config=config, select_range=(0,split_point))
     test_dataset = EV(root=args.root_dir, csv_file="/test_carla.csv", config=config, select_range=(split_point,dataset_size))
