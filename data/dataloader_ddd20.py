@@ -11,13 +11,18 @@ import pandas as pd
 
 
 class DDD20_Data(Dataset):
-    def __init__(self, root, csv_file, config):
+    def __init__(self, root, csv_file, config, select_range=None):
         self.root = root
         self._batch_read_number = 0
         camera_csv = pd.read_csv(self.root + csv_file)
         self.seq_len = config.seq_len
 
-        self.camera_csv = camera_csv
+        if select_range:
+            csv_selected = camera_csv.iloc[select_range[0]: select_range[1]]
+            self.camera_csv = csv_selected
+        else:
+            self.camera_csv = camera_csv
+            
         # image的transform
         self.transform_enhance_rgb = T.Compose([T.ToTensor(),
                                                 T.Resize((256, 256)),
