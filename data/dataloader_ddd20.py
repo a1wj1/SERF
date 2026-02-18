@@ -11,33 +11,51 @@ import pandas as pd
 
 
 class DDD20_Data(Dataset):
-    def __init__(self, root, csv_file, config, select_range=None):
+    def __init__(self, root, csv_file, config, select_range=None, is_val=False, val_indices=None):
+        """
+        Args:
+            root: 数据根目录
+            csv_file: CSV文件路径
+            config: 配置对象
+            select_range: 用于指定数据范围的参数（保留原功能，但不用于随机采样）
+            is_val: 是否为验证集（True表示验证集，False表示训练集）
+            val_indices: 验证集的索引列表（仅当is_val=True时使用）
+        """
         self.root = root
         self._batch_read_number = 0
-        camera_csv = pd.read_csv(self.root + csv_file)
         self.seq_len = config.seq_len
 
-        if select_range:
-            csv_selected = camera_csv.iloc[select_range[0]: select_range[1]]
-            self.camera_csv = csv_selected
+        camera_csv = pd.read_csv(self.root + csv_file)
+
+        if is_val:
+            if val_indices is None:
+                raise ValueError("val_indices must be provided for validation dataset")
+            self.camera_csv = camera_csv.iloc[val_indices].reset_index(drop=True)
         else:
-            self.camera_csv = camera_csv
-            
-        # image的transform
-        self.transform_enhance_rgb = T.Compose([T.ToTensor(),
-                                                T.Resize((256, 256)),
-                                                T.Normalize(mean=[0.485, 0.456, 0.406],
-                                                            std=[0.229, 0.224, 0.225])
-                                                ])
-        self.transform_enhance_dvs = T.Compose([T.ToTensor(),
-                                                T.Resize((256, 256)),
-                                                T.Normalize(mean=[0.485, 0.456, 0.406],
-                                                            std=[0.229, 0.224, 0.225])
-                                                ])
+            if val_indices is not None:
+                all_indices = set(range(len(camera_csv)))
+                train_indices = list(all_indices - set(val_indices))
+                self.camera_csv = camera_csv.iloc[train_indices].reset_index(drop=True)
+            else:
+                self.camera_csv = camera_csv
+
+        self.transform_enhance_rgb = T.Compose([
+            T.ToTensor(),
+            T.Resize((256, 256)),
+            T.Normalize(mean=[0.485, 0.456, 0.406],
+                        std=[0.229, 0.224, 0.225])
+        ])
+        self.transform_enhance_dvs = T.Compose([
+            T.ToTensor(),
+            T.Resize((256, 256)),
+            T.Normalize(mean=[0.485, 0.456, 0.406],
+                        std=[0.229, 0.224, 0.225])
+        ])
 
     def __len__(self):
-        """Returns the length of the dataset. """
+        """Returns the length of the dataset."""
         return len(self.camera_csv)
+        
 
     # {'aps_image_his_0': '/ddd20/rec1498946027_export/aps/201.png',
     #  'aps_image_his_1': '/ddd20/rec1498946027_export/aps/202.png',
