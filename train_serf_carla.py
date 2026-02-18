@@ -102,14 +102,31 @@ if __name__ == "__main__":
     # Config
     config = GlobalConfig()
 
-    # 定义数据增强操作
-    event_dataset = EV(root=args.root_dir, csv_file="/test_carla.csv", config=config)
-    dataset_size = int(len(event_dataset))
-    del event_dataset
-    split_point = int(dataset_size * 0.9)
+    event_dataset = EV(root=args.root_dir, csv_file="/train_carla.csv", config=config)
+    total_size = int(len(event_dataset))
 
-    train_dataset = EV(root=args.root_dir, csv_file="/test_carla.csv", config=config, select_range=(0,split_point))
-    test_dataset = EV(root=args.root_dir, csv_file="/test_carla.csv", config=config, select_range=(split_point,dataset_size))
+    val_size = int(total_size * 0.05)
+    val_indices = np.random.choice(total_size, size=val_size, replace=False).tolist()
+
+    del event_dataset
+
+    train_dataset = EV(
+        root=args.root_dir,
+        csv_file="/train_hybrid.csv",
+        config=config,
+        is_val=False,  # 训练集
+        val_indices=val_indices  # 传入验证集索引
+    )
+
+    val_dataset = EV(
+        root=args.root_dir,
+        csv_file="/train_hybrid.csv",
+        config=config,
+        is_val=True,  # 验证集
+        val_indices=val_indices  # 传入相同的验证集索引
+    )
+    print("train_dataset:", int(len(train_dataset)))
+    print("val_dataset:", int(len(val_dataset)))
 
 
     # DataLoader
@@ -123,7 +140,7 @@ if __name__ == "__main__":
     )
 
     dataloader_val = DataLoader(
-        dataset=test_dataset,
+        dataset=val_dataset,
         batch_size=args.batch_size,
         shuffle=False,
         num_workers=8,
