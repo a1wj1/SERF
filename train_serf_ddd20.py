@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
     train_dataset = EV(
         root=args.root_dir,
-        csv_file="/train_hybrid.csv",
+        csv_file="/train_dark.csv",
         config=config,
         is_val=False,  # 训练集
         val_indices=val_indices  # 传入验证集索引
