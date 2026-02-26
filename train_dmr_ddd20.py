@@ -553,7 +553,7 @@ if __name__ == "__main__":
     # 验证集：使用验证集索引
     val_dataset = EV(
         root=args.root_dir,
-        csv_file="/train_hybrid.csv",
+        csv_file="/train_dark.csv",
         config=config,
         is_val=True,  # 验证集
         val_indices=val_indices  # 传入相同的验证集索引
