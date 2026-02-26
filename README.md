@@ -85,7 +85,7 @@ python train_serf_carla.py
 The script must run on two GPUs. You can modify the 'gpus=' parameter in pl.Trainer.from_argparse_args.
 
 
-In addition, we also support training and evaluation of the DMR method [DMR](Dmr: Decomposed multi-modality representations for frames and events fusion in visual reinforcement learning)
+In addition, we also support training and evaluation of the DMR method [DMR]([Dmr: Decomposed multi-modality representations for frames and events fusion in visual reinforcement learning](https://ieeexplore.ieee.org/document/10656498))
 ```
 python train_dmr_ddd20.py
 ```
