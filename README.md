@@ -85,6 +85,11 @@ python train_serf_carla.py
 The script must run on two GPUs. You can modify the 'gpus=' parameter in pl.Trainer.from_argparse_args.
 
 
+In addition, we also support training and evaluation of the DMR method [DMR](Dmr: Decomposed multi-modality representations for frames and events fusion in visual reinforcement learning)
+```
+python train_dmr_ddd20.py
+```
+
 ## Test
 
 By modifying the root_dir and logdir and running:
@@ -99,6 +104,16 @@ or
 python test_serf_carla.py
 ```
 
+If this work is helpful for your research, please consider citing the following BibTeX entry:
+```
+@article{xia2025serf,
+  title={SERF: Spatiotemporal-Aware Event-RGB Fusion for Steering Angle Prediction},
+  author={Xia, Canming and Peng, Peixi and Xu, Haoran and Tan, Guang and Li, Luntong and Tian, Yonghong},
+  journal={IEEE Transactions on Intelligent Transportation Systems},
+  year={2025},
+  publisher={IEEE}
+}
+```
 
 
 
